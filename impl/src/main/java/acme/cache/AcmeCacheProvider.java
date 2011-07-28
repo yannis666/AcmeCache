@@ -19,12 +19,12 @@ import java.util.concurrent.Future;
 public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     @Override
     public CacheManager createCacheManager(String name) {
-        return new CacheManagerImpl();
+        return new CacheManagerImpl(name);
     }
 
     @Override
     public <K, V> Cache<K, V> createCache(String name) {
-        return new CacheImpl<K, V>();
+        return new CacheImpl<K, V>(name);
     }
 
     @Override
@@ -76,6 +76,12 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     }
 
     private static class CacheImpl<K, V> implements Cache<K, V> {
+        private final String name;
+
+        public CacheImpl(String name) {
+            this.name = name;
+        }
+
         @Override
         public V get(Object key) throws CacheException {
             throw new UnsupportedOperationException();
@@ -178,7 +184,7 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
 
         @Override
         public String getCacheName() {
-            throw new UnsupportedOperationException();
+            return name;
         }
 
         @Override
@@ -208,9 +214,15 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     }
 
     private static class CacheManagerImpl implements CacheManager {
+        private String name;
+
+        public CacheManagerImpl(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getName() {
-            throw new UnsupportedOperationException();
+            return name;
         }
 
         @Override
