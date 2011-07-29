@@ -46,6 +46,7 @@
                             <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
                             <includeArtifactIds>cache-tests</includeArtifactIds>
                             <includeScope>test</includeScope>
+                            <classifier>tests</classifier>
                         </configuration>
                     </execution>
                 </executions>
