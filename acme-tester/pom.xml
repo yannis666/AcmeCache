@@ -12,7 +12,7 @@
     </parent>
 
     <name>Acme Tests</name>
-    <url>https://github.com/jsr107/jsr107spec</url>
+    <url>https://github.com/yannis666/AcmeCache/</url>
 
     <properties>
     </properties>

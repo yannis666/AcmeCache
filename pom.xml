@@ -8,6 +8,9 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>Acme Parent</name>
+    <url>https://github.com/yannis666/AcmeCache/</url>
+
     <modules>
         <module>acme-cache</module>
         <module>acme-tester</module>
