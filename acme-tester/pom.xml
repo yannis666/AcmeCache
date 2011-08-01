@@ -2,9 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>acme.cache</groupId>
-    <artifactId>acmeCacheRoot</artifactId>
+    <artifactId>acme-tester</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <parent>
+        <groupId>acme.cache</groupId>
+        <artifactId>acme-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
 
     <name>Acme Tests</name>
     <url>https://github.com/jsr107/jsr107spec</url>
@@ -16,7 +21,7 @@
 
         <dependency>
             <groupId>acme.cache</groupId>
-            <artifactId>acmeCache</artifactId>
+            <artifactId>acme-cache</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

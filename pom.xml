@@ -4,12 +4,12 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>acme.cache</groupId>
-    <artifactId>acmeCachePrj</artifactId>
+    <artifactId>acme-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>impl</module>
-        <module>tck</module>
+        <module>acme-cache</module>
+        <module>acme-tester</module>
     </modules>
 </project>
