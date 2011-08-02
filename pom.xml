@@ -13,6 +13,5 @@
 
     <modules>
         <module>acme-cache</module>
-        <module>acme-tester</module>
     </modules>
 </project>
