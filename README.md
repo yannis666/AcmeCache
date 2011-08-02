@@ -1,4 +1,4 @@
-AcmeCache passes a few tests in CacheManagerFactoryTest
+AcmeCache passes tests in CacheManagerFactoryTest
 
-    mvn test -Dtest=CacheManagerFactoryTest
+    mvn -Dtest=CacheManagerFactoryTest install
 
