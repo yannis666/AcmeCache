@@ -7,6 +7,7 @@ import javax.cache.CacheException;
 import javax.cache.CacheLoader;
 import javax.cache.CacheManager;
 import javax.cache.CacheStatisticsMBean;
+import javax.cache.OptionalFeature;
 import javax.cache.Status;
 import javax.cache.event.CacheEntryListener;
 import javax.cache.event.NotificationScope;
@@ -30,6 +31,11 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     @Override
     public CacheConfiguration createCacheConfiguration() {
         return new CacheConfigurationImpl();
+    }
+
+    @Override
+    public boolean isSupported(OptionalFeature optionalFeature) {
+        return false;
     }
 
 
