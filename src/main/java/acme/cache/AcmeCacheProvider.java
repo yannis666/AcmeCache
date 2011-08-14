@@ -7,8 +7,8 @@ import javax.cache.CacheException;
 import javax.cache.CacheLoader;
 import javax.cache.CacheManager;
 import javax.cache.CacheStatisticsMBean;
+import javax.cache.CacheStatus;
 import javax.cache.OptionalFeature;
-import javax.cache.Status;
 import javax.cache.event.CacheEntryListener;
 import javax.cache.event.NotificationScope;
 import javax.cache.spi.CacheManagerFactoryProvider;
@@ -21,16 +21,6 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     @Override
     public CacheManager createCacheManager(String name) {
         return new CacheManagerImpl(name);
-    }
-
-    @Override
-    public <K, V> Cache<K, V> createCache(String name) {
-        return new CacheImpl<K, V>(name);
-    }
-
-    @Override
-    public CacheConfiguration createCacheConfiguration() {
-        return new CacheConfigurationImpl();
     }
 
     @Override
@@ -79,6 +69,16 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         public void setStatisticsEnabled(boolean enableStatistics) {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public boolean isTransactionEnabled() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setTransactionEnabled(boolean enableTransactions) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     private static class CacheImpl<K, V> implements Cache<K, V> {
@@ -114,7 +114,7 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         }
 
         @Override
-        public CacheStatisticsMBean getCacheStatistics() {
+        public CacheStatisticsMBean getStatistics() {
             throw new UnsupportedOperationException();
         }
 
@@ -179,18 +179,18 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         }
 
         @Override
-        public boolean registerCacheEntryListener(CacheEntryListener cacheEntryListener, NotificationScope scope) {
+        public boolean registerCacheEntryListener(CacheEntryListener<K, V> kvCacheEntryListener, NotificationScope scope, boolean synchronous) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public String getName() {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public boolean unregisterCacheEntryListener(CacheEntryListener cacheEntryListener) {
             throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public String getCacheName() {
-            return name;
         }
 
         @Override
@@ -214,7 +214,7 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         }
 
         @Override
-        public Status getStatus() {
+        public CacheStatus getStatus() {
             throw new UnsupportedOperationException();
         }
     }
@@ -237,17 +237,17 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         }
 
         @Override
-        public void addCache(Cache<?, ?> cache) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public <K, V> Cache<K, V> getCache(String cacheName) {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public boolean removeCache(String cacheName) throws IllegalStateException {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public CacheConfiguration createCacheConfiguration() {
             throw new UnsupportedOperationException();
         }
 
