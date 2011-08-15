@@ -6,11 +6,6 @@
     <artifactId>acme-cache</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <parent>
-        <groupId>acme.cache</groupId>
-        <artifactId>acme-parent</artifactId>
-        <version>0.1-SNAPSHOT</version>
-    </parent>
 
     <name>Acme Cache</name>
     <url>https://github.com/yannis666/AcmeCache/</url>

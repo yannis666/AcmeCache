@@ -6,7 +6,7 @@ import javax.cache.CacheConfiguration;
 import javax.cache.CacheException;
 import javax.cache.CacheLoader;
 import javax.cache.CacheManager;
-import javax.cache.CacheStatisticsMBean;
+import javax.cache.CacheStatistics;
 import javax.cache.CacheStatus;
 import javax.cache.OptionalFeature;
 import javax.cache.event.CacheEntryListener;
@@ -114,7 +114,7 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         }
 
         @Override
-        public CacheStatisticsMBean getStatistics() {
+        public CacheStatistics getStatistics() {
             throw new UnsupportedOperationException();
         }
 
@@ -238,6 +238,11 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
 
         @Override
         public <K, V> Cache<K, V> getCache(String cacheName) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Collection<Cache> getCaches() {
             throw new UnsupportedOperationException();
         }
 
