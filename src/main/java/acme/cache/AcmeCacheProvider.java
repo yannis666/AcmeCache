@@ -15,6 +15,11 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
     }
 
     @Override
+    public ClassLoader getDefaultClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    @Override
     public boolean isSupported(OptionalFeature optionalFeature) {
         return false;
     }
