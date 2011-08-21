@@ -6,12 +6,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.logging.Logger;
 
 public class ExperimentalTest {
 
@@ -32,7 +33,7 @@ public class ExperimentalTest {
 
         byte[] bytes = toBytes(o1, cl1);
         Object o2 = fromBytes(bytes, cl1);
-
+//
 //        Cache cache1 = factory.getCacheManager(cl1).createCacheBuilder("c1").build();
 //        Cache cache2 = factory.getCacheManager(cl2).createCacheBuilder("c2").build();
 //
@@ -71,21 +72,10 @@ public class ExperimentalTest {
     }
 
     private Object fromBytes(byte[] bytes, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(classLoader);
-        try {
-            return fromBytes(bytes);
-        } finally {
-            Thread.currentThread().setContextClassLoader(oldClassLoader);
-        }
-    }
-
-    private Object fromBytes(byte[] bytes) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bos = new ByteArrayInputStream(bytes);
         ObjectInputStream ois;
         try {
-            Logger.getLogger(this.getClass().getName()).info("-------");
-            ois = new ObjectInputStream(bos);
+            ois = new MyObjectInputStream(bos, classLoader);
             return (Object) ois.readObject();
         } finally {
             try {
@@ -113,8 +103,27 @@ public class ExperimentalTest {
 
         @Override
         protected Class<?> findClass(String name) throws ClassNotFoundException {
-            System.out.println("find class-----" + name);
+            System.out.println("find class name=" + name + ", this=" + this);
             return super.findClass(name);
+        }
+    }
+
+    private static class MyObjectInputStream extends ObjectInputStream {
+        private final ClassLoader classloader;
+
+        public MyObjectInputStream(InputStream in, ClassLoader classloader) throws IOException {
+            super(in);
+            this.classloader = classloader;
+        }
+
+        @Override
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+            String name = desc.getName();
+            try {
+                return Class.forName(name, false, classloader);
+            } catch (ClassNotFoundException ex) {
+                return super.resolveClass(desc);
+            }
         }
     }
 }
