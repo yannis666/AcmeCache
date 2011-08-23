@@ -5,10 +5,11 @@ import javax.cache.CacheBuilder;
 import javax.cache.CacheConfiguration;
 import javax.cache.CacheManager;
 import javax.cache.OptionalFeature;
-import javax.cache.spi.CacheManagerFactoryProvider;
+import javax.cache.Status;
+import javax.cache.spi.ServiceProvider;
 import java.util.Collection;
 
-public class AcmeCacheProvider implements CacheManagerFactoryProvider {
+public class AcmeCacheProvider implements ServiceProvider {
     @Override
     public CacheManager createCacheManager(ClassLoader classLoader, String name) {
         return new CacheManagerImpl(name);
@@ -34,6 +35,11 @@ public class AcmeCacheProvider implements CacheManagerFactoryProvider {
         @Override
         public String getName() {
             return name;
+        }
+
+        @Override
+        public Status getStatus() {
+            throw new UnsupportedOperationException();
         }
 
         @Override
