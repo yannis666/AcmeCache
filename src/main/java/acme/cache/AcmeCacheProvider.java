@@ -7,7 +7,7 @@ import javax.cache.CacheManager;
 import javax.cache.OptionalFeature;
 import javax.cache.Status;
 import javax.cache.spi.ServiceProvider;
-import java.util.Collection;
+import java.util.Set;
 
 public class AcmeCacheProvider implements ServiceProvider {
     @Override
@@ -53,7 +53,7 @@ public class AcmeCacheProvider implements ServiceProvider {
         }
 
         @Override
-        public Collection<Cache> getCaches() {
+        public Set<Cache> getCaches() {
             throw new UnsupportedOperationException();
         }
 
