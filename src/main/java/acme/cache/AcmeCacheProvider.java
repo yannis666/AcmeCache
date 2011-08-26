@@ -78,6 +78,11 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
+        public void addImmutableClass(Class immutableClass) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public void shutdown() {
             throw new UnsupportedOperationException();
         }
