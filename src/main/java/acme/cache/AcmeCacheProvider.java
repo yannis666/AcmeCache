@@ -6,10 +6,10 @@ import javax.cache.CacheConfiguration;
 import javax.cache.CacheManager;
 import javax.cache.OptionalFeature;
 import javax.cache.Status;
-import javax.cache.spi.ServiceProvider;
+import javax.cache.spi.CachingProvider;
 import java.util.Set;
 
-public class AcmeCacheProvider implements ServiceProvider {
+public class AcmeCacheProvider implements CachingProvider {
     @Override
     public CacheManager createCacheManager(ClassLoader classLoader, String name) {
         return new CacheManagerImpl(name);
@@ -69,6 +69,11 @@ public class AcmeCacheProvider implements ServiceProvider {
 
         @Override
         public Object getUserTransaction() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean isSupported(OptionalFeature optionalFeature) {
             throw new UnsupportedOperationException();
         }
 
