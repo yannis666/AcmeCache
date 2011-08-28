@@ -1,22 +1,8 @@
 package domain;
 
-import org.junit.Test;
-import sun.security.krb5.internal.KdcErrException;
-
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.CacheManagerFactory;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Date;
 import java.util.Set;
 
