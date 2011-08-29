@@ -53,7 +53,7 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public Set<Cache> getCaches() {
+        public <K, V> Set<Cache<K, V>> getCaches() {
             throw new UnsupportedOperationException();
         }
 
