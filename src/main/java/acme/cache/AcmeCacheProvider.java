@@ -63,11 +63,6 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public CacheConfiguration createCacheConfiguration() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public Object getUserTransaction() {
             throw new UnsupportedOperationException();
         }
