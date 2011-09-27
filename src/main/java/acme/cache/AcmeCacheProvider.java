@@ -81,5 +81,10 @@ public class AcmeCacheProvider implements CachingProvider {
         public void shutdown() {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public <T> T unwrap(Class<T> cls) {
+            throw new UnsupportedOperationException();
+        }
     }
 }
