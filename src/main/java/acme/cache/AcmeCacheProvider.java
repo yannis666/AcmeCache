@@ -7,6 +7,7 @@ import javax.cache.CacheManager;
 import javax.cache.OptionalFeature;
 import javax.cache.Status;
 import javax.cache.spi.CachingProvider;
+import javax.transaction.UserTransaction;
 import java.util.Set;
 
 public class AcmeCacheProvider implements CachingProvider {
@@ -63,7 +64,7 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public Object getUserTransaction() {
+        public UserTransaction getUserTransaction() {
             throw new UnsupportedOperationException();
         }
 
