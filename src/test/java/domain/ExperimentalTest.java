@@ -8,6 +8,8 @@ import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.event.CacheEntryListener;
 import javax.cache.event.NotificationScope;
+import javax.cache.transaction.IsolationLevel;
+import javax.cache.transaction.Mode;
 
 import java.sql.Connection;
 import java.util.Date;
@@ -70,7 +72,7 @@ public class ExperimentalTest {
                   setReadThrough(true).
                   setWriteThrough(true).
                   setStatisticsEnabled(true).
-                  setTransactionEnabled(true).
+                  setTransactionEnabled(IsolationLevel.TX_READ_REPEATABLE, Mode.LOCAL).
                   registerCacheEntryListener(listener1, NotificationScope.LOCAL, false).
                   registerCacheEntryListener(listener1, NotificationScope.LOCAL, false).
                   build();
