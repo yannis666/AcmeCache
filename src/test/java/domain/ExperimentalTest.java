@@ -30,7 +30,7 @@ public class ExperimentalTest {
                     setReadThrough(true).
                     setStatisticsEnabled(true).
                     setStoreByValue(true).
-                    setTransactionEnabled(IsolationLevel.TX_READ_REPEATABLE, Mode.LOCAL).
+                    setTransactionEnabled(IsolationLevel.REPEATABLE_READ, Mode.LOCAL).
                     setWriteThrough(true).
                     registerCacheEntryListener(createListener(), NotificationScope.LOCAL, false).
                     build();

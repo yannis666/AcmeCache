@@ -54,7 +54,7 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public <K, V> Set<Cache<K, V>> getCaches() {
+        public Iterable<Cache<?, ?>> getCaches() {
             throw new UnsupportedOperationException();
         }
 
@@ -74,7 +74,7 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public void addImmutableClass(Class immutableClass) {
+        public void registerImmutableClass(Class immutableClass) {
             throw new UnsupportedOperationException();
         }
 
