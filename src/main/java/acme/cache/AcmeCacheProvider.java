@@ -6,6 +6,7 @@ import javax.cache.CacheConfiguration;
 import javax.cache.CacheManager;
 import javax.cache.OptionalFeature;
 import javax.cache.Status;
+import javax.cache.experimental.ConfigurationBuilder;
 import javax.cache.spi.CachingProvider;
 import javax.transaction.UserTransaction;
 import java.util.Set;
@@ -85,6 +86,16 @@ public class AcmeCacheProvider implements CachingProvider {
 
         @Override
         public <T> T unwrap(Class<T> cls) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public <K, V> ConfigurationBuilder<K, V> createConfigurationBuilderEXPERIMENTAL() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public <K, V> javax.cache.experimental.CacheBuilder<K, V> getCacheBuilderEXPERIMENTAL() {
             throw new UnsupportedOperationException();
         }
     }
