@@ -71,6 +71,10 @@ public class Chunk {
             throw new IOException();
         }
         int length = getLength();
+        if (length == 0) {
+            return;
+        }
+
         reset();
         while (length > 0) {
             int read = in.read(buf, pos, length);

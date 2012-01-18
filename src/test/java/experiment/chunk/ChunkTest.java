@@ -110,7 +110,18 @@ public class ChunkTest {
             "bc",
             "def",
             "ghij",
-            "klmno"
+            "klmno",
+            "",
+            "a",
+            "",
+            "bc",
+            "",
+            "def",
+            "",
+            "ghij",
+            "",
+            "klmno",
+            "",
         };
         for (String value : values) {
             outputStream.writeLine(value);

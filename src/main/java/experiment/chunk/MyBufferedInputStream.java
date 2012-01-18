@@ -22,9 +22,15 @@ public class MyBufferedInputStream extends BufferedInputStream {
         int length = chunk.getLength();
         if (!chunk.atEnd()) {
             // we know we have it all
-            new String(chunk.buf, Chunk.SIZE_BYTES, length);
+            String ret = new String(chunk.buf, Chunk.SIZE_BYTES, length);
+            // TODO: currently, after each write we add a "next chunk length"
+            // TODO: could eliminate this if lead contained whether there was continuation
+            chunk.read(this);
+            if (chunk.getLength() != 0) {
+                throw new IOException();
+            }
+            return ret;
         }
-        //TODO: optimize if only chunk - no need to copy to baos
         ByteArrayOutputStream baos = new ByteArrayOutputStream(chunk.getLength());
         do {
             baos.write(chunk.buf, Chunk.SIZE_BYTES, length);
