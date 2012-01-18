@@ -2,24 +2,17 @@ package acme.cache;
 
 import javax.cache.Cache;
 import javax.cache.CacheBuilder;
-import javax.cache.CacheConfiguration;
 import javax.cache.CacheManager;
+import javax.cache.CacheManagerFactory;
 import javax.cache.OptionalFeature;
 import javax.cache.Status;
-import javax.cache.experimental.ConfigurationBuilder;
 import javax.cache.spi.CachingProvider;
 import javax.transaction.UserTransaction;
-import java.util.Set;
 
 public class AcmeCacheProvider implements CachingProvider {
     @Override
-    public CacheManager createCacheManager(ClassLoader classLoader, String name) {
-        return new CacheManagerImpl(name);
-    }
-
-    @Override
-    public ClassLoader getDefaultClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
+    public CacheManagerFactory getCacheManagerFactory() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -75,27 +68,12 @@ public class AcmeCacheProvider implements CachingProvider {
         }
 
         @Override
-        public void registerImmutableClass(Class immutableClass) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public void shutdown() {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public <T> T unwrap(Class<T> cls) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <K, V> ConfigurationBuilder<K, V> createConfigurationBuilderEXPERIMENTAL() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <K, V> javax.cache.experimental.CacheBuilder<K, V> getCacheBuilderEXPERIMENTAL() {
             throw new UnsupportedOperationException();
         }
     }
