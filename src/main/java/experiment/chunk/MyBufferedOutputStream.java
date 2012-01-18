@@ -42,22 +42,22 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
     public void writeLine(String line) throws IOException {
         byte[] bytes = line.getBytes();
         writeBytes(bytes, 0, bytes.length);
-        out.flush();
+        flush();
     }
     
     private void writeBytes(byte[] bytes, int start, int length) throws IOException {
         chunk.reset();
         for (int i=0; i < start + length; i++) {
             if (chunk.atEnd()) {
-                chunk.write(out);
+                chunk.write(this);
                 chunk.reset();
             }
             chunk.write(bytes[i]);
         }
-        chunk.write(out);
+        chunk.write(this);
         // TODO: currently, after each write we add a "next chunk length"
         // TODO: could eliminate this if lead contained whether there was continuation
         chunk.reset();
-        chunk.write(out);
+        chunk.write(this);
     }
 }
