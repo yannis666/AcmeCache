@@ -2,11 +2,19 @@ package experiment.chunk;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+/**
+ * @author ycosmado
+ * @since 1.0
+ */
 public class ChunkTest {
     @Test
     public void testLengthBad() {
@@ -74,8 +82,46 @@ public class ChunkTest {
             createChunkHelper(length);
         }
     }
+    
+    @Test
+    public void testAtEnd(){
+        int length = 5;
+        Chunk chunk = createChunkHelper(length);
+        for (int i=0; i < 5; i++) {
+            assertFalse("i=" + i, chunk.atEnd());
+            chunk.write(i);
+        }
+        assertTrue(chunk.atEnd());
+    }
 
     private Chunk createChunkHelper(int length) {
         return new Chunk(length);
+    }
+    
+    @Test
+    public void testReadWriteLine() throws Exception {
+        int chunkLength = 2;
+        Chunk chunk = new Chunk(chunkLength);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        MyBufferedOutputStream outputStream = new MyBufferedOutputStream(bos, chunk);
+        String[] values = {
+            "",
+            "a",
+            "bc",
+            "def",
+            "ghij",
+            "klmno"
+        };
+        for (String value : values) {
+            outputStream.writeLine(value);
+        }
+        byte[] bytes = bos.toByteArray();
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        MyBufferedInputStream inputStream = new MyBufferedInputStream(bis, chunk);
+        for (String value : values) {
+            String value1 = inputStream.readLine();
+            assertEquals(value, value1);
+        }
     }
 }
