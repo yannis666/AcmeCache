@@ -113,6 +113,7 @@ public class ChunkTest {
             "ghij",
             "klmno",
             "",
+            "",
             "a",
             "",
             "bc",

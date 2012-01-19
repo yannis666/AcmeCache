@@ -25,7 +25,7 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
         }
         this.chunk = chunk;
     }
-    
+
     public void writeLine(String line) throws IOException {
         byte[] bytes = line.getBytes();
         writeBytes(bytes, 0, bytes.length);
@@ -46,10 +46,10 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
             oos.close();
         }
     }
-    
+
     private void writeBytes(byte[] bytes, int start, int length) throws IOException {
         chunk.reset();
-        for (int i=0; i < start + length; i++) {
+        for (int i = 0; i < start + length; i++) {
             writeByte(bytes[i]);
         }
         writeChunk();

@@ -23,7 +23,7 @@ public class MyBufferedInputStream extends BufferedInputStream {
         super(in);
         this.chunk = chunk;
     }
-    
+
     public String readLine() throws IOException {
         int length = readChunk();
         if (!chunk.atEnd()) {
@@ -97,7 +97,7 @@ public class MyBufferedInputStream extends BufferedInputStream {
                 int read = read(chunkBytes, chunk.getPos(), length);
                 chunk.advancePos(read);
                 length -= read;
-            }  while (length > 0);
+            } while (length > 0);
         }
         return chunkLength;
     }

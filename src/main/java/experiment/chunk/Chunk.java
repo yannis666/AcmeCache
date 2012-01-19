@@ -39,14 +39,14 @@ public class Chunk {
     }
 
     public void setLengthInternal(int length) {
-        buf[0] = (byte)(length >>> 8);
+        buf[0] = (byte) (length >>> 8);
         buf[1] = (byte) length;
     }
 
     private boolean checkLength(int length, int minLength, int maxLength) {
         return (length >= minLength) && (length <= maxLength);
     }
-    
+
     boolean atEnd() {
         return pos == buf.length;
     }
@@ -67,7 +67,7 @@ public class Chunk {
     public byte[] getBytes() {
         return buf;
     }
-    
+
     public int getPos() {
         return pos;
     }
