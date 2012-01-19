@@ -48,16 +48,20 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
     private void writeBytes(byte[] bytes, int start, int length) throws IOException {
         chunk.reset();
         for (int i=0; i < start + length; i++) {
-            if (chunk.atEnd()) {
-                chunk.write(this);
-                chunk.reset();
-            }
-            chunk.write(bytes[i]);
+            writeByte(bytes[i]);
         }
         chunk.write(this);
         // TODO: currently, after each write we add a "next chunk length"
         // TODO: could eliminate this if lead contained whether there was continuation
         chunk.reset();
         chunk.write(this);
+    }
+
+    private void writeByte(byte aByte) throws IOException {
+        if (chunk.atEnd()) {
+            chunk.write(this);
+            chunk.reset();
+        }
+        chunk.write(aByte);
     }
 }
