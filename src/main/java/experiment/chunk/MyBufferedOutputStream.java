@@ -1,27 +1,9 @@
-/*
- *
- * Copyright (c) 2012. All Rights Reserved. Oracle Corporation.
- *
- * Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
- *
- * This software is the confidential and proprietary information of Oracle
- * Corporation. You shall not disclose such confidential and proprietary
- * information and shall use it only in accordance with the terms of the license
- * agreement you entered into with Oracle Corporation.
- *
- * Oracle Corporation makes no representations or warranties about the
- * suitability of the software, either express or implied, including but not
- * limited to the implied warranties of merchantability, fitness for a
- * particular purpose, or non-infringement. Oracle Corporation shall not be
- * liable for any damages suffered by licensee as a result of using, modifying
- * or distributing this software or its derivatives.
- *
- * This notice may not be removed or altered.
- */
 package experiment.chunk;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 /**
@@ -31,7 +13,12 @@ import java.io.OutputStream;
 public class MyBufferedOutputStream extends BufferedOutputStream {
     private final Chunk chunk;
 
-    public MyBufferedOutputStream(OutputStream outputStream, Chunk chunk) {
+    public MyBufferedOutputStream(OutputStream outputStream) {
+        this(outputStream, new Chunk());
+    }
+
+    // for testing
+    MyBufferedOutputStream(OutputStream outputStream, Chunk chunk) {
         super(outputStream);
         if (chunk == null) {
             throw new NullPointerException();
@@ -44,24 +31,44 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
         writeBytes(bytes, 0, bytes.length);
         flush();
     }
+
+    public void writeObject(Object obj) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        try {
+            oos.writeObject(obj);
+            oos.flush();
+            byte[] bytes = baos.toByteArray();
+            writeBytes(bytes, 0, bytes.length);
+            flush();
+        } finally {
+            baos.close();
+            oos.close();
+        }
+    }
     
     private void writeBytes(byte[] bytes, int start, int length) throws IOException {
         chunk.reset();
         for (int i=0; i < start + length; i++) {
             writeByte(bytes[i]);
         }
-        chunk.write(this);
+        writeChunk();
         // TODO: currently, after each write we add a "next chunk length"
         // TODO: could eliminate this if lead contained whether there was continuation
         chunk.reset();
-        chunk.write(this);
+        writeChunk();
     }
 
     private void writeByte(byte aByte) throws IOException {
         if (chunk.atEnd()) {
-            chunk.write(this);
+            writeChunk();
             chunk.reset();
         }
         chunk.write(aByte);
+    }
+
+    private void writeChunk() throws IOException {
+        chunk.close();
+        write(chunk.getBytes(), 0, chunk.getPos());
     }
 }

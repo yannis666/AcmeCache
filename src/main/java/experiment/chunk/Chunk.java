@@ -1,8 +1,6 @@
 package experiment.chunk;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author ycosmado
@@ -10,8 +8,13 @@ import java.io.OutputStream;
  */
 public class Chunk {
     public static int SIZE_BYTES = 2;
-    public final byte[] buf;
-    int pos = SIZE_BYTES;
+    private final byte[] buf;
+    private int pos = SIZE_BYTES;
+    public static final int DEFAULT_SIZE = 4096;
+
+    public Chunk() {
+        this(DEFAULT_SIZE);
+    }
 
     public Chunk(int length) {
         if (!checkLength(length, 1, 0xFFFF)) {
@@ -59,27 +62,20 @@ public class Chunk {
     public void reset() {
         pos = SIZE_BYTES;
     }
+
+
+    public byte[] getBytes() {
+        return buf;
+    }
     
-    void write(OutputStream out) throws IOException {
-        setLengthInternal(pos - SIZE_BYTES);
-        out.write(buf, 0, pos);
+    public int getPos() {
+        return pos;
     }
 
-    void read(InputStream in) throws IOException {
-        //TODO: maybe read again...
-        if (in.read(buf, 0, SIZE_BYTES) != SIZE_BYTES) {
+    public void advancePos(int read) throws IOException {
+        if (read < 0 || pos + read > buf.length) {
             throw new IOException();
         }
-        int length = getLength();
-        if (length == 0) {
-            return;
-        }
-
-        reset();
-        while (length > 0) {
-            int read = in.read(buf, pos, length);
-            pos += read;
-            length -= read;
-        }
+        pos += read;
     }
 }
