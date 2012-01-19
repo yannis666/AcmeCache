@@ -17,7 +17,7 @@ public class ChunkTest {
     @Test
     public void testLengthBad() {
         int maxLength = 256;
-        Chunk chunk = createChunkHelper(maxLength);
+        Chunk chunk = new Chunk(maxLength);
 
         int[] badValues = {
                 Integer.MIN_VALUE,
@@ -40,7 +40,7 @@ public class ChunkTest {
     @Test
     public void testLengthGood() throws Exception {
         int maxLength = 4096;
-        Chunk chunk = createChunkHelper(maxLength);
+        Chunk chunk = new Chunk(maxLength);
         for (int i=1; i<maxLength; i++) {
             chunk.setLength(i);
             assertEquals(i, chunk.getLength());
@@ -60,7 +60,7 @@ public class ChunkTest {
         };
         for (int length : badValues) {
             try {
-                createChunkHelper(length);
+                new Chunk(length);
                 fail();
             } catch (IllegalArgumentException e) {
                 // good
@@ -77,22 +77,18 @@ public class ChunkTest {
                 0xFFFF,
         };
         for (int length : goodValues) {
-            createChunkHelper(length);
+            new Chunk(length);
         }
     }
     
     @Test
     public void testAtEnd(){
         int length = 5;
-        Chunk chunk = createChunkHelper(length);
+        Chunk chunk = new Chunk(length);
         for (int i=0; i < 5; i++) {
             assertFalse("i=" + i, chunk.atEnd());
             chunk.write(i);
         }
         assertTrue(chunk.atEnd());
-    }
-
-    private Chunk createChunkHelper(int length) {
-        return new Chunk(length);
     }
 }

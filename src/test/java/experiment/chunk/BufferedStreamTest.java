@@ -12,14 +12,21 @@ import static org.junit.Assert.assertEquals;
  * @author ycosmado
  * @since 1.0
  */
-public class BufferedStreamTest {
+public class BufferedStreamTest extends TestSupport {
 
     @Test
-    public void testReadWriteLine() throws Exception {
-        int chunkLength = 2;
-        Chunk chunk = new Chunk(chunkLength);
+    public void testReadWriteLineOverflow() throws Exception {
+        testReadWriteLine(createSizedStreamFactory(2));
+    }
+
+    @Test
+    public void testReadWriteLineDefault() throws Exception {
+        testReadWriteLine(createDefaultStreamFactory());
+    }
+
+    private void testReadWriteLine(StreamFactory streamFactory) throws Exception {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        MyBufferedOutputStream outputStream = new MyBufferedOutputStream(bos, chunk);
+        MyBufferedOutputStream outputStream = streamFactory.createMyBufferedOutputStream(bos);
         String[] values = {
                 "",
                 "a",
@@ -46,7 +53,7 @@ public class BufferedStreamTest {
         byte[] bytes = bos.toByteArray();
 
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        MyBufferedInputStream inputStream = new MyBufferedInputStream(bis, chunk);
+        MyBufferedInputStream inputStream = streamFactory.createMyBufferedInputStream(bis);
         for (String value : values) {
             String value1 = inputStream.readLine();
             assertEquals(value, value1);
@@ -54,11 +61,18 @@ public class BufferedStreamTest {
     }
 
     @Test
-    public void testReadWriteObject() throws Exception{
-        int chunkLength = 2;
-        Chunk chunk = new Chunk(chunkLength);
+    public void testReadWriteObjectOverflow() throws Exception {
+        testReadWriteObject(createSizedStreamFactory(5));
+    }
+
+    @Test
+    public void testReadWriteObjectDefault() throws Exception {
+        testReadWriteObject(createDefaultStreamFactory());
+    }
+
+    private void testReadWriteObject(StreamFactory streamFactory) throws Exception {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        MyBufferedOutputStream outputStream = new MyBufferedOutputStream(bos, chunk);
+        MyBufferedOutputStream outputStream = streamFactory.createMyBufferedOutputStream(bos);
         HashMap<Integer, String> map = new HashMap<Integer, String>();
         map.put(1, "A");
         map.put(2, "B");
@@ -77,7 +91,7 @@ public class BufferedStreamTest {
         byte[] bytes = bos.toByteArray();
 
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        MyBufferedInputStream inputStream = new MyBufferedInputStream(bis, chunk);
+        MyBufferedInputStream inputStream = streamFactory.createMyBufferedInputStream(bis);
         for (Object value : values) {
             Object value1 = inputStream.readObject();
             assertEquals(value, value1);

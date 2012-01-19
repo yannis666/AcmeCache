@@ -52,6 +52,10 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
         for (int i = 0; i < start + length; i++) {
             writeByte(bytes[i]);
         }
+        endChunk();
+    }
+
+    protected void endChunk() throws IOException {
         writeChunk();
         // TODO: currently, after each write we add a "next chunk length"
         // TODO: could eliminate this if lead contained whether there was continuation
@@ -59,7 +63,7 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
         writeChunk();
     }
 
-    private void writeByte(byte aByte) throws IOException {
+    protected void writeByte(byte aByte) throws IOException {
         if (chunk.atEnd()) {
             writeChunk();
             chunk.reset();
