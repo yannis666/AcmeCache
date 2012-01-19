@@ -2,6 +2,7 @@ package experiment.chunk;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -74,5 +75,35 @@ public class MyBufferedOutputStream extends BufferedOutputStream {
     private void writeChunk() throws IOException {
         chunk.close();
         write(chunk.getBytes(), 0, chunk.getPos());
+    }
+
+    public OutputStream getOutputStream() {
+        return new MyOutputStream(this);
+    }
+
+    private static class MyOutputStream extends FilterOutputStream {
+        protected MyOutputStream(MyBufferedOutputStream out) {
+            super(out);
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            if (out != null) {
+                ((MyBufferedOutputStream) out).writeByte((byte) b);
+            } else {
+                throw new IOException();
+            }
+        }
+
+        @Override
+        public void close() throws IOException {
+            if (out != null) {
+                ((MyBufferedOutputStream) out).endChunk();
+                out.flush();
+                out = null;
+            } else {
+                throw new IOException();
+            }
+        }
     }
 }

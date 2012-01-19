@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 
 /**
  * @author ycosmado
@@ -29,11 +30,7 @@ public class MyBufferedInputStream extends BufferedInputStream {
         if (!chunk.atEnd()) {
             // we know we have it all
             String ret = new String(chunk.getBytes(), Chunk.SIZE_BYTES, length);
-            // TODO: currently, after each write we add a "next chunk length"
-            // TODO: could eliminate this if lead contained whether there was continuation
-            if (readChunk() != 0) {
-                throw new IOException();
-            }
+            readChunkEnd();
             return ret;
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream(2 * length);
@@ -48,6 +45,27 @@ public class MyBufferedInputStream extends BufferedInputStream {
         }
     }
 
+    public byte[] readBytes() throws IOException {
+        int length = readChunk();
+        if (!chunk.atEnd()) {
+            // we know we have it all
+            byte[] ret = new byte[length];
+            System.arraycopy(chunk.getBytes(), Chunk.SIZE_BYTES, ret, 0, length);
+            readChunkEnd();
+            return ret;
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(2 * length);
+        do {
+            baos.write(chunk.getBytes(), Chunk.SIZE_BYTES, length);
+            length = readChunk();
+        } while (length != 0);
+        try {
+            return baos.toByteArray();
+        } finally {
+            baos.close();
+        }
+    }
+
     public Object readObject() throws IOException, ClassNotFoundException {
         int length = readChunk();
         if (!chunk.atEnd()) {
@@ -56,11 +74,7 @@ public class MyBufferedInputStream extends BufferedInputStream {
             ObjectInputStream ois = new ObjectInputStream(bais);
             try {
                 Object ret = ois.readObject();
-                // TODO: currently, after each write we add a "next chunk length"
-                // TODO: could eliminate this if lead contained whether there was continuation
-                if (readChunk() != 0) {
-                    throw new IOException();
-                }
+                readChunkEnd();
                 return ret;
             } finally {
                 ois.close();
@@ -80,6 +94,14 @@ public class MyBufferedInputStream extends BufferedInputStream {
             baos.close();
             bais.close();
             ois.close();
+        }
+    }
+
+    private void readChunkEnd() throws IOException {
+        // TODO: currently, after each write we add a "next chunk length"
+        // TODO: could eliminate this if lead contained whether there was continuation
+        if (readChunk() != 0) {
+            throw new IOException();
         }
     }
 

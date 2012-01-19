@@ -4,9 +4,12 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author ycosmado
@@ -95,6 +98,38 @@ public class BufferedStreamTest extends TestSupport {
         for (Object value : values) {
             Object value1 = inputStream.readObject();
             assertEquals(value, value1);
+        }
+    }
+    
+    @Test
+    public void testFoo() throws Exception {
+        testFoo(createSizedStreamFactory(5));
+    }
+
+    private void testFoo(StreamFactory streamFactory) throws Exception {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        MyBufferedOutputStream outputStream = streamFactory.createMyBufferedOutputStream(bos);
+
+        byte[][] values = {
+                "".getBytes(),
+                "a".getBytes(),
+                "bc".getBytes(),
+                "def".getBytes(),
+                "ghij".getBytes(),
+                "klmno".getBytes(),
+        };
+        for (byte[] value : values) {
+            OutputStream out = outputStream.getOutputStream();
+            out.write(value, 0, value.length);
+            out.close();
+        }
+        byte[] bytes = bos.toByteArray();
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        MyBufferedInputStream inputStream = streamFactory.createMyBufferedInputStream(bis);
+        for (byte[] value : values) {
+            byte[] value1 = inputStream.readBytes();
+            assertTrue(Arrays.equals(value, value1));
         }
     }
 }
