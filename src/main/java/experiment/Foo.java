@@ -1,4 +1,4 @@
 package experiment;
 
-public class Foo {
+public interface Foo {
 }
